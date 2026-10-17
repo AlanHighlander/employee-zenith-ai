@@ -59,11 +59,11 @@ const status: Funcionario["status"][] = ["Ativo", "Ativo", "Ativo", "Férias", "
 export const funcionarios: Funcionario[] = nomes.map((nome, i) => ({
   matricula: String(1040 + i * 7),
   nome: `${nome} (demo)`,
-  cargo: CARGOS[i % CARGOS.length],
-  loja: LOJAS[i % LOJAS.length],
-  departamento: DEPARTAMENTOS[i % DEPARTAMENTOS.length],
+  cargo: CARGOS[i % CARGOS.length]!,
+  loja: LOJAS[i % LOJAS.length]!,
+  departamento: DEPARTAMENTOS[i % DEPARTAMENTOS.length]!,
   admissao: `${String((i % 27) + 1).padStart(2, "0")}/${String((i % 12) + 1).padStart(2, "0")}/${2019 + (i % 6)}`,
-  status: status[i % status.length],
+  status: status[i % status.length]!,
   salario: 1900 + ((i * 437) % 3800),
 }));
 

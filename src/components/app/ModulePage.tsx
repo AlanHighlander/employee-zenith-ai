@@ -61,7 +61,7 @@ export function ModulePage({ title, description, kpis = [], tableTitle, columns,
                 <TableRow key={i}>
                   {columns.map((c) => (
                     <TableCell key={c.key} className={c.align === "right" ? "text-right tabular-nums" : "whitespace-nowrap"}>
-                      {c.status ? <StatusPill value={r[c.key]} /> : r[c.key]}
+                      {c.status ? <StatusPill value={r[c.key] ?? ""} /> : r[c.key] ?? ""}
                     </TableCell>
                   ))}
                 </TableRow>

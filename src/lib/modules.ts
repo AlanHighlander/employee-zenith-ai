@@ -74,7 +74,7 @@ export const MODULES = {
       ["Loja Centro", "5.984", "6.112", "128", "6", "Em andamento"], ["Loja Norte", "4.576", "4.660", "84", "4", "Pendente"],
       ["Loja Sul", "4.224", "4.316", "92", "5", "Pendente"], ["Loja Shopping", "5.456", "5.597", "141", "7", "Em andamento"],
       ["Loja Leste", "3.872", "3.930", "58", "2", "Aprovado"], ["Loja Oeste", "3.696", "3.743", "47", "3", "Aprovado"],
-    ].map(([loja, previstas, trabalhadas, extras, faltas, status]) => ({ loja, previstas, trabalhadas, extras, faltas, status })),
+    ].map(([loja = "", previstas = "", trabalhadas = "", extras = "", faltas = "", status = ""]) => ({ loja, previstas, trabalhadas, extras, faltas, status })),
     future: "A importação de arquivos (AFD/AEJ) e a integração com relógios e sistemas de ponto externos estão previstas para uma próxima etapa.",
   },
   ferias: {
