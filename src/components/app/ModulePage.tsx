@@ -15,7 +15,7 @@ export type Column = { key: string; label: string; status?: boolean; align?: "ri
 export type ModuleKpi = {
   label: string; value: string; hint?: string; icon: LucideIcon; tone?: "default" | "warning" | "success" | "danger";
   /** Valor numérico consolidado; quando presente, é recalculado para a loja selecionada (demo). */
-  n?: number; fmt?: "int" | "h" | "brl";
+  n?: number | undefined; fmt?: "int" | "h" | "brl" | undefined;
 };
 
 function kpiNoEscopo(k: ModuleKpi, fator: number): ModuleKpi {
@@ -37,7 +37,7 @@ export function ModulePage({ title, description, kpis = [], tableTitle, columns,
   const nomeLoja = (id?: string) => lojas.find((l) => l.id === id)?.nome ?? "—";
   // Demo: filtro no navegador. Futuro: a função de servidor recebe a loja e o banco aplica as políticas.
   const noEscopo = useMemo(
-    () => rows.filter((r) => r.lojaId === undefined || lojasNoEscopo.includes(r.lojaId)).map((r) => (r.lojaId !== undefined ? { ...r, loja: nomeLoja(r.lojaId) } : r)),
+    () => rows.filter((r) => r["lojaId"] === undefined || lojasNoEscopo.includes(r["lojaId"])).map((r) => (r["lojaId"] !== undefined ? { ...r, loja: nomeLoja(r["lojaId"]) } : r)),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [rows, lojasNoEscopo, lojas],
   );
@@ -67,7 +67,7 @@ export function ModulePage({ title, description, kpis = [], tableTitle, columns,
       />
       {kpis.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {kpis.map((k) => <KpiCard key={k.label} {...kpiNoEscopo(semLoja ? { ...k, n: undefined } : k, fatorDemo)} />)}
+          {kpis.map((k) => <KpiCard key={k.label} {...kpiNoEscopo(k, semLoja ? 1 : fatorDemo)} />)}
         </div>
       )}
       <Card className="shadow-none">

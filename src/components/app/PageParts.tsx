@@ -3,7 +3,7 @@ import { Store, type LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-export function PageHeader({ title, description, actions, unidade }: { title: string; description?: string; actions?: ReactNode; unidade?: string }) {
+export function PageHeader({ title, description, actions, unidade }: { title: string; description?: string; actions?: ReactNode; unidade?: string | undefined }) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
