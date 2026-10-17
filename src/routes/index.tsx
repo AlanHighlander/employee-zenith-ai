@@ -4,11 +4,19 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Too
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader, KpiCard } from "@/components/app/PageParts";
 import { DemoBadge } from "@/components/app/DemoBadge";
-import { kpis, evolucaoMensal, quadroPorLoja, alertas, brl } from "@/lib/demo-data";
+import { kpis, evolucaoMensal, alertas, brl } from "@/lib/demo-data";
 import { cn } from "@/lib/utils";
-import { useLoja, TODAS_LOJAS } from "@/lib/loja-context";
+import { useState } from "react";
+import { useScope, useUnidadeLabel } from "@/lib/scope-context";
+import { RestrictedNotice } from "@/components/app/RestrictedNotice";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const totalAtivos = quadroPorLoja.reduce((a, l) => a + l.ativos, 0);
+const PERIODOS = [
+  { id: "1", label: "Último mês", meses: 1 },
+  { id: "3", label: "Últimos 3 meses", meses: 3 },
+  { id: "6", label: "Últimos 6 meses", meses: 6 },
+  { id: "12", label: "Últimos 12 meses", meses: 12 },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,34 +34,59 @@ const sevCls = { alta: "bg-destructive", media: "bg-warning", baixa: "bg-info" }
 const axis = { fontSize: 12, fill: "var(--muted-foreground)" };
 
 function Dashboard() {
-  const { loja } = useLoja();
-  const adm = loja === TODAS_LOJAS;
-  const dadosLoja = quadroPorLoja.find((l) => `Loja ${l.loja}` === loja);
-  // Demo: indicadores da loja proporcionais ao seu quadro.
-  const f = adm || !dadosLoja ? 1 : dadosLoja.ativos / totalAtivos;
+  const { perfil, lojas, lojasNoEscopo, lojaAtual, fatorDemo: f } = useScope();
+  const unidade = useUnidadeLabel();
+  const [periodo, setPeriodo] = useState("6");
+  const meses = PERIODOS.find((p) => p.id === periodo)!.meses;
+
+  if (!perfil.dadosPessoais) {
+    return (
+      <div className="space-y-6">
+        <PageHeader title="Dashboard executivo" />
+        <RestrictedNotice />
+      </div>
+    );
+  }
+
+  // DEMO: valores consolidados proporcionais ao quadro das lojas no escopo.
+  // Futuro: uma função de servidor devolverá os agregados já filtrados pelo banco.
   const n = (v: number) => Math.max(0, Math.round(v * f));
+  const evolucao = evolucaoMensal.slice(-Math.max(meses, 2)).map((m) => ({ ...m, admissoes: n(m.admissoes), desligamentos: n(m.desligamentos), custo: Math.round(m.custo * f) }));
+  const doPeriodo = evolucao.slice(-meses);
+  const lojasGrafico = lojas
+    .filter((l) => lojasNoEscopo.includes(l.id))
+    .map((l) => ({ loja: l.nome.replace(/^Loja /, ""), ativos: l.quadroDemo, horasExtras: l.horasExtrasDemo }));
+  const alertasVisiveis = alertas
+    .filter((a) => lojasNoEscopo.includes(a.lojaId))
+    .map((a) => ({ ...a, detalhe: lojas.find((l) => l.id === a.lojaId)?.nome ?? "" }));
   const k = {
-    quadroAtivo: adm ? kpis.quadroAtivo : dadosLoja?.ativos ?? 0,
-    admissoesMes: n(kpis.admissoesMes),
-    desligamentosMes: n(kpis.desligamentosMes),
-    horasExtras: adm ? kpis.horasExtras : dadosLoja?.horasExtras ?? 0,
+    quadroAtivo: lojasGrafico.reduce((s, l) => s + l.ativos, 0),
+    admissoes: doPeriodo.reduce((s, m) => s + m.admissoes, 0),
+    desligamentos: doPeriodo.reduce((s, m) => s + m.desligamentos, 0),
+    horasExtras: lojasGrafico.reduce((s, l) => s + l.horasExtras, 0),
     custoPessoal: Math.round(kpis.custoPessoal * f),
-    alertasPendentes: n(kpis.alertasPendentes),
+    alertasPendentes: alertasVisiveis.length,
   };
-  const evolucao = evolucaoMensal.map((m) => ({ ...m, admissoes: n(m.admissoes), desligamentos: n(m.desligamentos), custo: Math.round(m.custo * f) }));
-  const lojasGrafico = adm ? quadroPorLoja : quadroPorLoja.filter((l) => l === dadosLoja);
-  const alertasVisiveis = adm ? alertas : alertas.slice(0, Math.min(alertas.length, k.alertasPendentes)).map((a) => ({ ...a, detalhe: loja }));
+  const periodoLabel = PERIODOS.find((p) => p.id === periodo)!.label.toLowerCase();
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title={adm ? "Dashboard executivo" : `Dashboard · ${loja}`}
-        description={adm ? "Modo adm: visão consolidada de todas as lojas. Números fictícios, apenas para demonstração." : "Visão da loja selecionada. Números fictícios, apenas para demonstração."}
-        actions={<DemoBadge />}
+        unidade={unidade}
+        title={lojaAtual ? `Dashboard · ${lojaAtual.nome}` : "Dashboard executivo"}
+        description={lojaAtual ? "Indicadores da loja selecionada. Números fictícios, apenas para demonstração." : "Visão consolidada de todas as lojas. Números fictícios, apenas para demonstração."}
+        actions={<>
+          <Select value={periodo} onValueChange={setPeriodo}>
+            <SelectTrigger className="h-9 w-[180px]" aria-label="Período"><SelectValue /></SelectTrigger>
+            <SelectContent>{PERIODOS.map((p) => <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent>
+          </Select>
+          <DemoBadge />
+        </>}
       />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard label="Quadro ativo" value={String(k.quadroAtivo)} hint={adm ? `${quadroPorLoja.length} lojas` : loja} icon={Users} />
-        <KpiCard label="Admissões no mês" value={String(k.admissoesMes)} icon={UserPlus} tone="success" />
-        <KpiCard label="Desligamentos no mês" value={String(k.desligamentosMes)} icon={UserMinus} tone="danger" />
+        <KpiCard label="Quadro ativo" value={String(k.quadroAtivo)} hint={lojaAtual ? lojaAtual.nome : `${lojasGrafico.length} lojas`} icon={Users} />
+        <KpiCard label="Admissões" value={String(k.admissoes)} hint={periodoLabel} icon={UserPlus} tone="success" />
+        <KpiCard label="Desligamentos" value={String(k.desligamentos)} hint={periodoLabel} icon={UserMinus} tone="danger" />
         <KpiCard label="Turnover" value={`${kpis.turnover.toLocaleString("pt-BR")}%`} hint="Mensal" icon={RefreshCw} />
         <KpiCard label="Absenteísmo" value={`${kpis.absenteismo.toLocaleString("pt-BR")}%`} icon={CalendarX} tone="warning" />
         <KpiCard label="Horas extras" value={`${k.horasExtras} h`} icon={Timer} tone="warning" />
@@ -82,8 +115,9 @@ function Dashboard() {
         <Card className="shadow-none">
           <CardHeader><CardTitle className="text-base">Alertas pendentes</CardTitle></CardHeader>
           <CardContent className="space-y-3">
+            {alertasVisiveis.length === 0 && <p className="text-sm text-muted-foreground">Nenhum alerta para esta unidade.</p>}
             {alertasVisiveis.map((a) => (
-              <div key={a.titulo} className="flex gap-3 rounded-md border p-3">
+              <div key={a.titulo + a.lojaId} className="flex gap-3 rounded-md border p-3">
                 <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", sevCls[a.severidade])} />
                 <div>
                   <p className="text-sm font-medium">{a.titulo}</p>
@@ -111,7 +145,7 @@ function Dashboard() {
           </CardContent>
         </Card>
         <Card className="shadow-none">
-          <CardHeader><CardTitle className="text-base">{adm ? "Quadro e horas extras por loja" : "Quadro e horas extras da loja"}</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base">{lojaAtual ? "Quadro e horas extras da loja" : "Quadro e horas extras por loja"}</CardTitle></CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={256}>
               <BarChart data={lojasGrafico}>

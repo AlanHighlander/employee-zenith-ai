@@ -6,31 +6,14 @@ import {
 } from "@/components/ui/sidebar";
 import { NAV_GROUPS, NAV_ITEMS } from "@/lib/navigation";
 import { DemoBadge } from "./DemoBadge";
-import { LojaProvider, useLoja, TODAS_LOJAS } from "@/lib/loja-context";
-import { LOJAS } from "@/lib/demo-data";
-import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-function LojaSelector() {
-  const { loja, setLoja } = useLoja();
-  return (
-    <Select value={loja} onValueChange={setLoja}>
-      <SelectTrigger className="h-9 w-[190px] sm:w-[230px]" aria-label="Selecionar loja">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value={TODAS_LOJAS}>Modo adm · Todas as lojas</SelectItem>
-        <SelectSeparator />
-        {LOJAS.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}
-      </SelectContent>
-    </Select>
-  );
-}
+import { ScopeProvider } from "@/lib/scope-context";
+import { LojaSelector, PerfilDemoSelector } from "./LojaSelector";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <LojaProvider>
+    <ScopeProvider>
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="px-4 py-5">
@@ -71,21 +54,18 @@ export function AppShell({ children }: { children: ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-card/90 px-4 backdrop-blur">
+        <header className="sticky top-0 z-10 flex h-14 items-center gap-2 sm:gap-3 border-b bg-card/90 px-4 backdrop-blur">
           <SidebarTrigger />
           <LojaSelector />
           <span className="hidden text-sm text-muted-foreground md:inline">Outubro/2026</span>
           <div className="ml-auto flex items-center gap-3">
-            <DemoBadge />
-            <div className="hidden items-center gap-2 sm:flex">
-              <div className="flex size-8 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-secondary-foreground">US</div>
-              <span className="text-sm">Usuário de demonstração</span>
-            </div>
+            <span className="hidden lg:inline-flex"><DemoBadge /></span>
+            <PerfilDemoSelector />
           </div>
         </header>
         <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
       </div>
     </SidebarProvider>
-    </LojaProvider>
+    </ScopeProvider>
   );
 }

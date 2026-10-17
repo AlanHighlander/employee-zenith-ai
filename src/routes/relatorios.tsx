@@ -7,7 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageHeader, StatusPill } from "@/components/app/PageParts";
 import { DemoBadge, FutureNotice } from "@/components/app/DemoBadge";
-import { funcionarios, LOJAS, CARGOS, DEPARTAMENTOS } from "@/lib/demo-data";
+import { funcionarios, CARGOS, DEPARTAMENTOS, lojaVigente } from "@/lib/demo-data";
+import { useScope, useUnidadeLabel } from "@/lib/scope-context";
+import { RestrictedNotice } from "@/components/app/RestrictedNotice";
 
 export const Route = createFileRoute("/relatorios")({
   head: () => ({
@@ -39,19 +41,25 @@ function Filtro({ label, value, onChange, options }: { label: string; value: str
 }
 
 function Relatorios() {
-  const [loja, setLoja] = useState(TODOS);
+  const { perfil, lojas, lojasNoEscopo } = useScope();
+  const unidade = useUnidadeLabel();
   const [cargo, setCargo] = useState(TODOS);
   const [dep, setDep] = useState(TODOS);
   const [periodo, setPeriodo] = useState("Outubro/2026");
 
   const rows = useMemo(() => funcionarios.filter((f) =>
-    (loja === TODOS || f.loja === loja) && (cargo === TODOS || f.cargo === cargo) && (dep === TODOS || f.departamento === dep)), [loja, cargo, dep]);
+    lojasNoEscopo.includes(lojaVigente(f) ?? "") && (cargo === TODOS || f.cargo === cargo) && (dep === TODOS || f.departamento === dep)), [lojasNoEscopo, cargo, dep]);
+
+  if (!perfil.dadosPessoais) {
+    return <div className="space-y-6"><PageHeader title="Relatórios" /><RestrictedNotice /></div>;
+  }
 
   return (
     <div className="space-y-6">
       <PageHeader
+        unidade={unidade}
         title="Relatórios"
-        description="Monte relatórios filtrando por loja, período, cargo e departamento."
+        description="A loja vem do seletor no topo. Filtre também por período, cargo e departamento."
         actions={<>
           <Button variant="outline" size="sm" disabled title="Exportação ainda não implementada"><FileDown /> PDF</Button>
           <Button variant="outline" size="sm" disabled title="Exportação ainda não implementada"><FileSpreadsheet /> Excel</Button>
@@ -59,8 +67,7 @@ function Relatorios() {
       />
       <Card className="shadow-none">
         <CardContent className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
-          <Filtro label="Loja" value={loja} onChange={setLoja} options={LOJAS} />
-          <div className="space-y-1.5">
+                    <div className="space-y-1.5">
             <p className="text-xs font-medium text-muted-foreground">Período</p>
             <Select value={periodo} onValueChange={setPeriodo}>
               <SelectTrigger><SelectValue /></SelectTrigger>
@@ -88,7 +95,7 @@ function Relatorios() {
               {rows.map((f) => (
                 <TableRow key={f.matricula}>
                   <TableCell className="whitespace-nowrap">{f.nome}</TableCell><TableCell className="whitespace-nowrap">{f.cargo}</TableCell>
-                  <TableCell className="whitespace-nowrap">{f.loja}</TableCell><TableCell>{f.departamento}</TableCell>
+                  <TableCell className="whitespace-nowrap">{lojas.find((l) => l.id === lojaVigente(f))?.nome}</TableCell><TableCell>{f.departamento}</TableCell>
                   <TableCell><StatusPill value={f.status} /></TableCell>
                 </TableRow>
               ))}
