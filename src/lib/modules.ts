@@ -8,7 +8,7 @@ import { funcionarios, brl } from "./demo-data";
 export type ModuleConfig = {
   title: string; description: string; tableTitle: string; columns: Column[];
   rows: Record<string, string>[]; kpis?: ModuleKpi[]; future?: string; actions?: string[];
-} satisfies Record<string, ModuleConfig>;
+};
 
 export const MODULES = {
   funcionarios: {
