@@ -3,15 +3,20 @@ import {
   Upload, Wallet, CheckCircle2, HeartHandshake, FileText, Briefcase, GraduationCap, Plug, ShieldCheck, Activity,
 } from "lucide-react";
 import type { Column, ModuleKpi } from "@/components/app/ModulePage";
-import { funcionarios, brl } from "./demo-data";
+import { funcionarios, brl, lojaVigente } from "./demo-data";
 
 export type ModuleConfig = {
   title: string; description: string; tableTitle: string; columns: Column[];
   rows: Record<string, string>[]; kpis?: ModuleKpi[]; future?: string; actions?: string[];
+  /** Módulo com dados pessoais: bloqueado para o administrador técnico. */
+  dadosPessoais?: boolean;
+  /** Registros sem loja (ex.: contratos de benefício) mostram nota de escopo. */
+  semLoja?: boolean;
 };
 
 export const MODULES = {
   funcionarios: {
+    dadosPessoais: true,
     title: "Funcionários",
     description: "Cadastro e histórico funcional de todos os colaboradores da rede.",
     tableTitle: "Colaboradores",
@@ -24,13 +29,21 @@ export const MODULES = {
     ],
     columns: [
       { key: "matricula", label: "Matrícula" }, { key: "nome", label: "Nome" }, { key: "cargo", label: "Cargo" },
-      { key: "loja", label: "Loja" }, { key: "departamento", label: "Departamento" }, { key: "admissao", label: "Admissão" },
+      { key: "loja", label: "Loja atual" }, { key: "desde", label: "Lotado desde" }, { key: "transferido", label: "Transferido" }, { key: "admissao", label: "Admissão" },
       { key: "status", label: "Status", status: true },
     ],
-    rows: funcionarios.map((f) => ({ ...f, salario: brl(f.salario) })),
+    rows: funcionarios.map((f) => {
+      const atual = f.lotacoes.find((l) => l.fim === null);
+      return {
+        matricula: f.matricula, nome: f.nome, cargo: f.cargo, departamento: f.departamento, admissao: f.admissao, status: f.status,
+        lojaId: lojaVigente(f) ?? "", desde: atual ? atual.inicio.split("-").reverse().join("/") : "—",
+        transferido: f.lotacoes.length > 1 ? "Sim" : "Não",
+      };
+    }),
     future: "Ficha completa com histórico de cargos, salários, transferências e ocorrências será ligada ao banco de dados com acesso restrito por perfil.",
   },
   admissoes: {
+    dadosPessoais: true,
     title: "Admissões e desligamentos",
     description: "Acompanhe processos admissionais, contratos de experiência e rescisões.",
     tableTitle: "Movimentações recentes",
@@ -55,6 +68,7 @@ export const MODULES = {
     future: "Cálculos rescisórios oficiais e envio ao eSocial não estão implementados; serão feitos pelo sistema oficial de folha via integração.",
   },
   ponto: {
+    dadosPessoais: true,
     title: "Ponto e jornada",
     description: "Espelho de ponto, horas extras, atrasos e banco de horas por loja.",
     tableTitle: "Resumo de jornada — outubro",
@@ -71,13 +85,14 @@ export const MODULES = {
       { key: "faltas", label: "Faltas", align: "right" }, { key: "status", label: "Fechamento", status: true },
     ],
     rows: [
-      ["Loja Centro", "5.984", "6.112", "128", "6", "Em andamento"], ["Loja Norte", "4.576", "4.660", "84", "4", "Pendente"],
-      ["Loja Sul", "4.224", "4.316", "92", "5", "Pendente"], ["Loja Shopping", "5.456", "5.597", "141", "7", "Em andamento"],
-      ["Loja Leste", "3.872", "3.930", "58", "2", "Aprovado"], ["Loja Norte", "3.696", "3.743", "47", "3", "Aprovado"],
-    ].map(([loja = "", previstas = "", trabalhadas = "", extras = "", faltas = "", status = ""]) => ({ loja, previstas, trabalhadas, extras, faltas, status })),
+      ["loja-centro", "5.984", "6.112", "128", "6", "Em andamento"], ["loja-norte", "4.576", "4.660", "84", "4", "Pendente"],
+      ["loja-sul", "4.224", "4.316", "92", "5", "Pendente"], ["loja-shopping", "5.456", "5.597", "141", "7", "Em andamento"],
+      ["loja-leste", "3.872", "3.930", "58", "2", "Aprovado"],
+    ].map(([lojaId = "", previstas = "", trabalhadas = "", extras = "", faltas = "", status = ""]) => ({ lojaId, previstas, trabalhadas, extras, faltas, status })),
     future: "A importação de arquivos (AFD/AEJ) e a integração com relógios e sistemas de ponto externos estão previstas para uma próxima etapa.",
   },
   ferias: {
+    dadosPessoais: true,
     title: "Férias e afastamentos",
     description: "Programação de férias, períodos aquisitivos e afastamentos médicos ou legais.",
     tableTitle: "Programação e afastamentos",
@@ -101,6 +116,7 @@ export const MODULES = {
     ],
   },
   folha: {
+    dadosPessoais: true,
     title: "Folha de pagamento",
     description: "Prévia, conferência e aprovação da folha antes do envio ao sistema oficial.",
     tableTitle: "Prévia da folha — outubro/2026",
@@ -117,13 +133,15 @@ export const MODULES = {
       { key: "status", label: "Conferência", status: true },
     ],
     rows: [
-      ["Loja Centro", "34", 112400, 9800, "Pendente"], ["Loja Norte", "26", 84200, 6100, "Aprovado"],
-      ["Loja Sul", "24", 79100, 6700, "Pendente"], ["Loja Shopping", "31", 104900, 10400, "Em andamento"],
-      ["Loja Leste", "22", 71200, 4300, "Aprovado"], ["Loja Norte", "21", 68400, 3500, "Aprovado"],
-    ].map(([loja, colab, bruto, extras, status]) => ({ loja: String(loja), colab: String(colab), bruto: brl(Number(bruto)), extras: brl(Number(extras)), status: String(status) })),
+      ["loja-centro", "34", 112400, 9800, "Pendente"], ["loja-norte", "26", 84200, 6100, "Aprovado"],
+      ["loja-sul", "24", 79100, 6700, "Pendente"], ["loja-shopping", "31", 104900, 10400, "Em andamento"],
+      ["loja-leste", "22", 71200, 4300, "Aprovado"],
+    ].map(([lojaId, colab, bruto, extras, status]) => ({ lojaId: String(lojaId), colab: String(colab), bruto: brl(Number(bruto)), extras: brl(Number(extras)), status: String(status) })),
     future: "Os valores são estimativas fictícias. Cálculos oficiais (INSS, IRRF, FGTS) não estão implementados; o fluxo de aprovação e a exportação serão ligados ao sistema oficial de folha.",
   },
   beneficios: {
+    semLoja: true,
+    dadosPessoais: true,
     title: "Benefícios e custos de pessoal",
     description: "Benefícios concedidos e composição do custo total de pessoal. Acesso restrito a RH e diretoria.",
     tableTitle: "Benefícios",
@@ -146,6 +164,7 @@ export const MODULES = {
     ].map(([beneficio, fornecedor, ativos, custo]) => ({ beneficio: String(beneficio), fornecedor: String(fornecedor), ativos: String(ativos), custo: brl(Number(custo)), status: "Ativo" })),
   },
   documentos: {
+    dadosPessoais: true,
     title: "Documentos e vencimentos",
     description: "ASOs, contratos, certificados e documentos com controle de validade.",
     tableTitle: "Documentos monitorados",
@@ -170,6 +189,7 @@ export const MODULES = {
     future: "O armazenamento privado de arquivos, com acesso controlado por perfil, será ativado junto com o backend.",
   },
   recrutamento: {
+    dadosPessoais: true,
     title: "Recrutamento e seleção",
     description: "Vagas abertas, candidatos e etapas do processo seletivo.",
     tableTitle: "Vagas",
@@ -192,6 +212,8 @@ export const MODULES = {
     ],
   },
   desempenho: {
+    semLoja: true,
+    dadosPessoais: true,
     title: "Desempenho e treinamentos",
     description: "Ciclos de avaliação, metas e trilhas de treinamento obrigatórias.",
     tableTitle: "Treinamentos",
@@ -214,6 +236,7 @@ export const MODULES = {
     ],
   },
   integracoes: {
+    semLoja: true,
     title: "Integrações",
     description: "Conexões com sistemas externos. Nenhuma integração está ativa nesta etapa.",
     tableTitle: "Integrações previstas",
@@ -234,6 +257,7 @@ export const MODULES = {
     future: "Credenciais de integrações serão guardadas apenas no servidor e nunca expostas no navegador.",
   },
   usuarios: {
+    semLoja: true,
     title: "Usuários, permissões e auditoria",
     description: "11 contas previstas: 6 RH, 4 diretoria e 1 administrador. Gerentes de loja não possuem conta.",
     tableTitle: "Contas previstas",
