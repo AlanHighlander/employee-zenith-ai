@@ -1,12 +1,17 @@
 import type { ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
+import { Store, type LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-export function PageHeader({ title, description, actions }: { title: string; description?: string; actions?: ReactNode }) {
+export function PageHeader({ title, description, actions, unidade }: { title: string; description?: string; actions?: ReactNode; unidade?: string }) {
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
+        {unidade && (
+          <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs font-semibold text-accent-foreground">
+            <Store className="size-3.5" /> Unidade: {unidade}
+          </p>
+        )}
         <h1 className="text-2xl font-bold text-foreground md:text-3xl">{title}</h1>
         {description && <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{description}</p>}
       </div>
