@@ -41,11 +41,11 @@ function Dashboard() {
         <KpiCard label="Alertas pendentes" value={String(kpis.alertasPendentes)} icon={BellRing} tone="danger" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid items-start gap-4 lg:grid-cols-3">
         <Card className="shadow-none lg:col-span-2">
           <CardHeader><CardTitle className="text-base">Evolução do quadro e movimentações</CardTitle></CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
+          <CardContent>
+            <ResponsiveContainer width="100%" height={288}>
               <BarChart data={evolucaoMensal}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis dataKey="mes" tick={axis} axisLine={false} tickLine={false} />
@@ -78,8 +78,8 @@ function Dashboard() {
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="shadow-none">
           <CardHeader><CardTitle className="text-base">Custo de pessoal (R$ mil)</CardTitle></CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
+          <CardContent>
+            <ResponsiveContainer width="100%" height={256}>
               <AreaChart data={evolucaoMensal}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis dataKey="mes" tick={axis} axisLine={false} tickLine={false} />
@@ -92,8 +92,8 @@ function Dashboard() {
         </Card>
         <Card className="shadow-none">
           <CardHeader><CardTitle className="text-base">Quadro e horas extras por loja</CardTitle></CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
+          <CardContent>
+            <ResponsiveContainer width="100%" height={256}>
               <BarChart data={quadroPorLoja}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis dataKey="loja" tick={axis} axisLine={false} tickLine={false} />
