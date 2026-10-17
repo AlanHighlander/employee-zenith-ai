@@ -42,7 +42,7 @@ function Dashboard() {
   };
   const evolucao = evolucaoMensal.map((m) => ({ ...m, admissoes: n(m.admissoes), desligamentos: n(m.desligamentos), custo: Math.round(m.custo * f) }));
   const lojasGrafico = adm ? quadroPorLoja : quadroPorLoja.filter((l) => l === dadosLoja);
-  const alertasVisiveis = adm ? alertas : alertas.slice(0, Math.max(1, n(alertas.length)));
+  const alertasVisiveis = adm ? alertas : alertas.slice(0, Math.min(alertas.length, k.alertasPendentes)).map((a) => ({ ...a, detalhe: loja }));
   return (
     <div className="space-y-6">
       <PageHeader
