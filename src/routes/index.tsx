@@ -42,7 +42,7 @@ function Dashboard() {
       </div>
 
       <div className="grid items-start gap-4 lg:grid-cols-3">
-        <Card className="shadow-none lg:col-span-2">
+        <Card className="self-start shadow-none lg:col-span-2">
           <CardHeader><CardTitle className="text-base">Evolução do quadro e movimentações</CardTitle></CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={288}>
