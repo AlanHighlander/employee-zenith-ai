@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdmissoesRouteImport } from './routes/admissoes'
+import { Route as AssistenteRouteImport } from './routes/assistente'
 import { Route as BeneficiosRouteImport } from './routes/beneficios'
 import { Route as DesempenhoRouteImport } from './routes/desempenho'
 import { Route as DocumentosRouteImport } from './routes/documentos'
@@ -20,6 +21,7 @@ import { Route as FuncionariosRouteImport } from './routes/funcionarios'
 import { Route as IntegracoesRouteImport } from './routes/integracoes'
 import { Route as PontoRouteImport } from './routes/ponto'
 import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
 import { Route as UsuariosRouteImport } from './routes/usuarios'
 
 const IndexRoute = IndexRouteImport.update({
@@ -30,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdmissoesRoute = AdmissoesRouteImport.update({
   id: '/admissoes',
   path: '/admissoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistenteRoute = AssistenteRouteImport.update({
+  id: '/assistente',
+  path: '/assistente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BeneficiosRoute = BeneficiosRouteImport.update({
@@ -77,6 +84,11 @@ const RecrutamentoRoute = RecrutamentoRouteImport.update({
   path: '/recrutamento',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsuariosRoute = UsuariosRouteImport.update({
   id: '/usuarios',
   path: '/usuarios',
@@ -86,6 +98,7 @@ const UsuariosRoute = UsuariosRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
   '/beneficios': typeof BeneficiosRoute
   '/desempenho': typeof DesempenhoRoute
   '/documentos': typeof DocumentosRoute
@@ -95,11 +108,13 @@ export interface FileRoutesByFullPath {
   '/integracoes': typeof IntegracoesRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
   '/usuarios': typeof UsuariosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
   '/beneficios': typeof BeneficiosRoute
   '/desempenho': typeof DesempenhoRoute
   '/documentos': typeof DocumentosRoute
@@ -109,12 +124,14 @@ export interface FileRoutesByTo {
   '/integracoes': typeof IntegracoesRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
   '/usuarios': typeof UsuariosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
   '/beneficios': typeof BeneficiosRoute
   '/desempenho': typeof DesempenhoRoute
   '/documentos': typeof DocumentosRoute
@@ -124,6 +141,7 @@ export interface FileRoutesById {
   '/integracoes': typeof IntegracoesRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
   '/usuarios': typeof UsuariosRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +149,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admissoes'
+    | '/assistente'
     | '/beneficios'
     | '/desempenho'
     | '/documentos'
@@ -140,11 +159,13 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/ponto'
     | '/recrutamento'
+    | '/relatorios'
     | '/usuarios'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/admissoes'
+    | '/assistente'
     | '/beneficios'
     | '/desempenho'
     | '/documentos'
@@ -154,11 +175,13 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/ponto'
     | '/recrutamento'
+    | '/relatorios'
     | '/usuarios'
   id:
     | '__root__'
     | '/'
     | '/admissoes'
+    | '/assistente'
     | '/beneficios'
     | '/desempenho'
     | '/documentos'
@@ -168,12 +191,14 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/ponto'
     | '/recrutamento'
+    | '/relatorios'
     | '/usuarios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdmissoesRoute: typeof AdmissoesRoute
+  AssistenteRoute: typeof AssistenteRoute
   BeneficiosRoute: typeof BeneficiosRoute
   DesempenhoRoute: typeof DesempenhoRoute
   DocumentosRoute: typeof DocumentosRoute
@@ -183,6 +208,7 @@ export interface RootRouteChildren {
   IntegracoesRoute: typeof IntegracoesRoute
   PontoRoute: typeof PontoRoute
   RecrutamentoRoute: typeof RecrutamentoRoute
+  RelatoriosRoute: typeof RelatoriosRoute
   UsuariosRoute: typeof UsuariosRoute
 }
 
@@ -200,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/admissoes'
       fullPath: '/admissoes'
       preLoaderRoute: typeof AdmissoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistente': {
+      id: '/assistente'
+      path: '/assistente'
+      fullPath: '/assistente'
+      preLoaderRoute: typeof AssistenteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/beneficios': {
@@ -265,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecrutamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/usuarios': {
       id: '/usuarios'
       path: '/usuarios'
@@ -278,6 +318,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmissoesRoute: AdmissoesRoute,
+  AssistenteRoute: AssistenteRoute,
   BeneficiosRoute: BeneficiosRoute,
   DesempenhoRoute: DesempenhoRoute,
   DocumentosRoute: DocumentosRoute,
@@ -287,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   IntegracoesRoute: IntegracoesRoute,
   PontoRoute: PontoRoute,
   RecrutamentoRoute: RecrutamentoRoute,
+  RelatoriosRoute: RelatoriosRoute,
   UsuariosRoute: UsuariosRoute,
 }
 export const routeTree = rootRouteImport
