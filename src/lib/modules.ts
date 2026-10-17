@@ -8,9 +8,9 @@ import { funcionarios, brl } from "./demo-data";
 export type ModuleConfig = {
   title: string; description: string; tableTitle: string; columns: Column[];
   rows: Record<string, string>[]; kpis?: ModuleKpi[]; future?: string; actions?: string[];
-};
+} satisfies Record<string, ModuleConfig>;
 
-export const MODULES: Record<string, ModuleConfig> = {
+export const MODULES = {
   funcionarios: {
     title: "Funcionários",
     description: "Cadastro e histórico funcional de todos os colaboradores da rede.",
@@ -255,4 +255,4 @@ export const MODULES: Record<string, ModuleConfig> = {
     ],
     future: "Autenticação segura, papéis de acesso e trilha de auditoria serão implementados no backend. Nada nesta tela concede acesso real ainda.",
   },
-};
+} satisfies Record<string, ModuleConfig>;
