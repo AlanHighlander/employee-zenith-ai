@@ -10,33 +10,206 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdmissoesRouteImport } from './routes/admissoes'
+import { Route as AssistenteRouteImport } from './routes/assistente'
+import { Route as BeneficiosRouteImport } from './routes/beneficios'
+import { Route as DesempenhoRouteImport } from './routes/desempenho'
+import { Route as DocumentosRouteImport } from './routes/documentos'
+import { Route as FeriasRouteImport } from './routes/ferias'
+import { Route as FolhaRouteImport } from './routes/folha'
+import { Route as FuncionariosRouteImport } from './routes/funcionarios'
+import { Route as IntegracoesRouteImport } from './routes/integracoes'
+import { Route as PontoRouteImport } from './routes/ponto'
+import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as UsuariosRouteImport } from './routes/usuarios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdmissoesRoute = AdmissoesRouteImport.update({
+  id: '/admissoes',
+  path: '/admissoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistenteRoute = AssistenteRouteImport.update({
+  id: '/assistente',
+  path: '/assistente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeneficiosRoute = BeneficiosRouteImport.update({
+  id: '/beneficios',
+  path: '/beneficios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesempenhoRoute = DesempenhoRouteImport.update({
+  id: '/desempenho',
+  path: '/desempenho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentosRoute = DocumentosRouteImport.update({
+  id: '/documentos',
+  path: '/documentos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeriasRoute = FeriasRouteImport.update({
+  id: '/ferias',
+  path: '/ferias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FolhaRoute = FolhaRouteImport.update({
+  id: '/folha',
+  path: '/folha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FuncionariosRoute = FuncionariosRouteImport.update({
+  id: '/funcionarios',
+  path: '/funcionarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegracoesRoute = IntegracoesRouteImport.update({
+  id: '/integracoes',
+  path: '/integracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PontoRoute = PontoRouteImport.update({
+  id: '/ponto',
+  path: '/ponto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecrutamentoRoute = RecrutamentoRouteImport.update({
+  id: '/recrutamento',
+  path: '/recrutamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsuariosRoute = UsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
+  '/beneficios': typeof BeneficiosRoute
+  '/desempenho': typeof DesempenhoRoute
+  '/documentos': typeof DocumentosRoute
+  '/ferias': typeof FeriasRoute
+  '/folha': typeof FolhaRoute
+  '/funcionarios': typeof FuncionariosRoute
+  '/integracoes': typeof IntegracoesRoute
+  '/ponto': typeof PontoRoute
+  '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/usuarios': typeof UsuariosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
+  '/beneficios': typeof BeneficiosRoute
+  '/desempenho': typeof DesempenhoRoute
+  '/documentos': typeof DocumentosRoute
+  '/ferias': typeof FeriasRoute
+  '/folha': typeof FolhaRoute
+  '/funcionarios': typeof FuncionariosRoute
+  '/integracoes': typeof IntegracoesRoute
+  '/ponto': typeof PontoRoute
+  '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/usuarios': typeof UsuariosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admissoes': typeof AdmissoesRoute
+  '/assistente': typeof AssistenteRoute
+  '/beneficios': typeof BeneficiosRoute
+  '/desempenho': typeof DesempenhoRoute
+  '/documentos': typeof DocumentosRoute
+  '/ferias': typeof FeriasRoute
+  '/folha': typeof FolhaRoute
+  '/funcionarios': typeof FuncionariosRoute
+  '/integracoes': typeof IntegracoesRoute
+  '/ponto': typeof PontoRoute
+  '/recrutamento': typeof RecrutamentoRoute
+  '/relatorios': typeof RelatoriosRoute
+  '/usuarios': typeof UsuariosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admissoes'
+    | '/assistente'
+    | '/beneficios'
+    | '/desempenho'
+    | '/documentos'
+    | '/ferias'
+    | '/folha'
+    | '/funcionarios'
+    | '/integracoes'
+    | '/ponto'
+    | '/recrutamento'
+    | '/relatorios'
+    | '/usuarios'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admissoes'
+    | '/assistente'
+    | '/beneficios'
+    | '/desempenho'
+    | '/documentos'
+    | '/ferias'
+    | '/folha'
+    | '/funcionarios'
+    | '/integracoes'
+    | '/ponto'
+    | '/recrutamento'
+    | '/relatorios'
+    | '/usuarios'
+  id:
+    | '__root__'
+    | '/'
+    | '/admissoes'
+    | '/assistente'
+    | '/beneficios'
+    | '/desempenho'
+    | '/documentos'
+    | '/ferias'
+    | '/folha'
+    | '/funcionarios'
+    | '/integracoes'
+    | '/ponto'
+    | '/recrutamento'
+    | '/relatorios'
+    | '/usuarios'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdmissoesRoute: typeof AdmissoesRoute
+  AssistenteRoute: typeof AssistenteRoute
+  BeneficiosRoute: typeof BeneficiosRoute
+  DesempenhoRoute: typeof DesempenhoRoute
+  DocumentosRoute: typeof DocumentosRoute
+  FeriasRoute: typeof FeriasRoute
+  FolhaRoute: typeof FolhaRoute
+  FuncionariosRoute: typeof FuncionariosRoute
+  IntegracoesRoute: typeof IntegracoesRoute
+  PontoRoute: typeof PontoRoute
+  RecrutamentoRoute: typeof RecrutamentoRoute
+  RelatoriosRoute: typeof RelatoriosRoute
+  UsuariosRoute: typeof UsuariosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +221,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admissoes': {
+      id: '/admissoes'
+      path: '/admissoes'
+      fullPath: '/admissoes'
+      preLoaderRoute: typeof AdmissoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistente': {
+      id: '/assistente'
+      path: '/assistente'
+      fullPath: '/assistente'
+      preLoaderRoute: typeof AssistenteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beneficios': {
+      id: '/beneficios'
+      path: '/beneficios'
+      fullPath: '/beneficios'
+      preLoaderRoute: typeof BeneficiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/desempenho': {
+      id: '/desempenho'
+      path: '/desempenho'
+      fullPath: '/desempenho'
+      preLoaderRoute: typeof DesempenhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documentos': {
+      id: '/documentos'
+      path: '/documentos'
+      fullPath: '/documentos'
+      preLoaderRoute: typeof DocumentosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ferias': {
+      id: '/ferias'
+      path: '/ferias'
+      fullPath: '/ferias'
+      preLoaderRoute: typeof FeriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/folha': {
+      id: '/folha'
+      path: '/folha'
+      fullPath: '/folha'
+      preLoaderRoute: typeof FolhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/funcionarios': {
+      id: '/funcionarios'
+      path: '/funcionarios'
+      fullPath: '/funcionarios'
+      preLoaderRoute: typeof FuncionariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/integracoes': {
+      id: '/integracoes'
+      path: '/integracoes'
+      fullPath: '/integracoes'
+      preLoaderRoute: typeof IntegracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ponto': {
+      id: '/ponto'
+      path: '/ponto'
+      fullPath: '/ponto'
+      preLoaderRoute: typeof PontoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recrutamento': {
+      id: '/recrutamento'
+      path: '/recrutamento'
+      fullPath: '/recrutamento'
+      preLoaderRoute: typeof RecrutamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/usuarios': {
+      id: '/usuarios'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdmissoesRoute: AdmissoesRoute,
+  AssistenteRoute: AssistenteRoute,
+  BeneficiosRoute: BeneficiosRoute,
+  DesempenhoRoute: DesempenhoRoute,
+  DocumentosRoute: DocumentosRoute,
+  FeriasRoute: FeriasRoute,
+  FolhaRoute: FolhaRoute,
+  FuncionariosRoute: FuncionariosRoute,
+  IntegracoesRoute: IntegracoesRoute,
+  PontoRoute: PontoRoute,
+  RecrutamentoRoute: RecrutamentoRoute,
+  RelatoriosRoute: RelatoriosRoute,
+  UsuariosRoute: UsuariosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
