@@ -33,12 +33,12 @@ function Dashboard() {
   const f = adm || !dadosLoja ? 1 : dadosLoja.ativos / totalAtivos;
   const n = (v: number) => Math.max(0, Math.round(v * f));
   const k = {
-    quadroAtivo: adm ? k.quadroAtivo : dadosLoja?.ativos ?? 0,
-    admissoesMes: n(k.admissoesMes),
-    desligamentosMes: n(k.desligamentosMes),
-    horasExtras: adm ? k.horasExtras : dadosLoja?.horasExtras ?? 0,
+    quadroAtivo: adm ? kpis.quadroAtivo : dadosLoja?.ativos ?? 0,
+    admissoesMes: n(kpis.admissoesMes),
+    desligamentosMes: n(kpis.desligamentosMes),
+    horasExtras: adm ? kpis.horasExtras : dadosLoja?.horasExtras ?? 0,
     custoPessoal: Math.round(kpis.custoPessoal * f),
-    alertasPendentes: n(k.alertasPendentes),
+    alertasPendentes: n(kpis.alertasPendentes),
   };
   const evolucao = evolucaoMensal.map((m) => ({ ...m, admissoes: n(m.admissoes), desligamentos: n(m.desligamentos), custo: Math.round(m.custo * f) }));
   const lojasGrafico = adm ? quadroPorLoja : quadroPorLoja.filter((l) => l === dadosLoja);
