@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { LOJAS_SEMENTE, type Loja } from "./lojas";
+import { INDICADORES_DEMO_POR_CODIGO, type Loja } from "./lojas";
+import { listarLojas } from "./listar-lojas";
 import { PERFIS_DEMO, type PerfilDemo } from "./perfis";
 
 /** Valor especial do seletor: visão consolidada da empresa. */
@@ -37,15 +38,42 @@ const Ctx = createContext<Scope | null>(null);
 export function ScopeProvider({ children }: { children: ReactNode }) {
   const [perfilId, setPerfilIdState] = useState(PERFIS_DEMO[0]!.id);
   const [lojaId, setLojaIdState] = useState<string>(TODAS_LOJAS);
-  const [lojas, setLojas] = useState<Loja[]>(LOJAS_SEMENTE);
+  const [lojas, setLojas] = useState<Loja[]>([]);
+  useEffect(() => {
+  async function carregarLojas() {
+    try {
+      const dados = await listarLojas();
+
+      const lojasReais: Loja[] = dados.map((loja) => ({
+        id: loja.id,
+        empresaId: loja.company_id,
+        codigo: loja.code,
+        nome: loja.name,
+        cidade: "",
+        ativa: loja.active,
+        possuiHistorico: false,
+        quadroDemo: INDICADORES_DEMO_POR_CODIGO[loja.code]?.quadroDemo ?? 0,
+horasExtrasDemo:
+  INDICADORES_DEMO_POR_CODIGO[loja.code]?.horasExtrasDemo ?? 0,
+
+      }));
+
+      setLojas(lojasReais);
+    } catch (erro) {
+      console.error("Erro ao carregar lojas:", erro);
+    }
+  }
+
+  void carregarLojas();
+}, []);
 
   useEffect(() => {
     const p = sessionStorage.getItem(KEY_PERFIL);
     const l = sessionStorage.getItem(KEY_LOJA);
-    const ls = sessionStorage.getItem(KEY_LOJAS);
+
     if (p) setPerfilIdState(p);
     if (l) setLojaIdState(l);
-    if (ls) { try { setLojas(JSON.parse(ls)); } catch { /* ignora */ } }
+
   }, []);
 
   const perfil = PERFIS_DEMO.find((p) => p.id === perfilId) ?? PERFIS_DEMO[0]!;

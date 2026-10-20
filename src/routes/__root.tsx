@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
-  Outlet,
+    Outlet,
   Link,
+  redirect,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -9,6 +10,9 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useRouterState } from "@tanstack/react-router";
+import { AuthGuard } from "@/components/app/AuthGuard";
+import { verificarTrocaSenha } from "@/lib/verificar-troca-senha";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -75,6 +79,25 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: async ({ location }) => {
+    if (location.pathname === '/login') {
+      return
+    }
+
+    const sessao = await verificarTrocaSenha()
+
+    if (!sessao.autenticado) {
+      throw redirect({ to: '/login' })
+    }
+
+    if (sessao.precisaTrocar && location.pathname !== '/trocar-senha') {
+      throw redirect({ to: '/trocar-senha' })
+    }
+
+    if (!sessao.precisaTrocar && location.pathname === '/trocar-senha') {
+      throw redirect({ to: '/' })
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -121,12 +144,23 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
+  const isLoginPage = pathname === "/login" || pathname === "/trocar-senha";
+
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AppShell>
-        <Outlet />
-      </AppShell>
+    {isLoginPage ? (
+  <Outlet />
+) : (
+  <AuthGuard>
+    <AppShell>
+      <Outlet />
+    </AppShell>
+  </AuthGuard>
+)}
     </QueryClientProvider>
   );
 }

@@ -26,3 +26,15 @@ export const LOJAS_SEMENTE: Loja[] = [
   { id: "loja-shopping", empresaId: EMPRESA_DEMO.id, codigo: "L04", nome: "Loja Shopping", cidade: "Guarulhos/SP", ativa: true, possuiHistorico: true, quadroDemo: 41, horasExtrasDemo: 161 },
   { id: "loja-leste", empresaId: EMPRESA_DEMO.id, codigo: "L05", nome: "Loja Leste", cidade: "São Paulo/SP", ativa: true, possuiHistorico: true, quadroDemo: 33, horasExtrasDemo: 77 },
 ];
+
+
+export const INDICADORES_DEMO_POR_CODIGO: Record<
+  string,
+  { quadroDemo: number; horasExtrasDemo: number }
+> = {
+  ASASUL01: { quadroDemo: 44, horasExtrasDemo: 158 },
+  SOBRAD01: { quadroDemo: 34, horasExtrasDemo: 104 },
+  TAGUA001: { quadroDemo: 32, horasExtrasDemo: 112 },
+  VICENT01: { quadroDemo: 41, horasExtrasDemo: 161 },
+  AGUAS001: { quadroDemo: 33, horasExtrasDemo: 77 },
+};

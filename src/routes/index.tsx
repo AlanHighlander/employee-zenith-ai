@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Users, UserPlus, UserMinus, RefreshCw, CalendarX, Timer, Wallet, BellRing } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +10,8 @@ import { useState } from "react";
 import { useScope, useUnidadeLabel } from "@/lib/scope-context";
 import { RestrictedNotice } from "@/components/app/RestrictedNotice";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { verificarTrocaSenha } from '@/lib/verificar-troca-senha'
+
 
 const PERIODOS = [
   { id: "1", label: "Último mês", meses: 1 },
@@ -19,6 +21,19 @@ const PERIODOS = [
 ];
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+  const resultado = await verificarTrocaSenha()
+
+  if (!resultado.autenticado) {
+    throw redirect({ to: '/login' })
+  }
+
+  if (resultado.precisaTrocar) {
+    throw redirect({ to: '/trocar-senha' })
+  }
+
+  return resultado
+},
   head: () => ({
     meta: [
       { title: "Dashboard executivo · Pessoas360" },

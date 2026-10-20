@@ -24,7 +24,13 @@ export function LojaSelector({ className }: { className?: string }) {
             <SelectSeparator />
           </>
         )}
-        {lojasPermitidas.map((l) => <SelectItem key={l.id} value={l.id}>{l.nome}</SelectItem>)}
+
+{lojasPermitidas.map((l) => (
+  <SelectItem key={l.id} value={l.id}>
+    {l.codigo} - {l.nome}
+  </SelectItem>
+))}
+
       </SelectContent>
     </Select>
   );

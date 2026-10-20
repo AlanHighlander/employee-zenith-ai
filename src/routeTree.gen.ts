@@ -19,10 +19,15 @@ import { Route as FeriasRouteImport } from './routes/ferias'
 import { Route as FolhaRouteImport } from './routes/folha'
 import { Route as FuncionariosRouteImport } from './routes/funcionarios'
 import { Route as IntegracoesRouteImport } from './routes/integracoes'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PontoRouteImport } from './routes/ponto'
 import { Route as RecrutamentoRouteImport } from './routes/recrutamento'
 import { Route as RelatoriosRouteImport } from './routes/relatorios'
+import { Route as TrocarSenhaRouteImport } from './routes/trocar-senha'
 import { Route as UsuariosRouteImport } from './routes/usuarios'
+import { Route as ApiFeriasDocumentosExcluirRouteImport } from './routes/api.ferias.documentos.excluir'
+import { Route as ApiFeriasDocumentosUploadRouteImport } from './routes/api.ferias.documentos.upload'
+import { Route as ApiFeriasDocumentosVisualizarRouteImport } from './routes/api.ferias.documentos.visualizar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -74,6 +79,11 @@ const IntegracoesRoute = IntegracoesRouteImport.update({
   path: '/integracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PontoRoute = PontoRouteImport.update({
   id: '/ponto',
   path: '/ponto',
@@ -89,11 +99,34 @@ const RelatoriosRoute = RelatoriosRouteImport.update({
   path: '/relatorios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrocarSenhaRoute = TrocarSenhaRouteImport.update({
+  id: '/trocar-senha',
+  path: '/trocar-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsuariosRoute = UsuariosRouteImport.update({
   id: '/usuarios',
   path: '/usuarios',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiFeriasDocumentosExcluirRoute =
+  ApiFeriasDocumentosExcluirRouteImport.update({
+    id: '/api/ferias/documentos/excluir',
+    path: '/api/ferias/documentos/excluir',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiFeriasDocumentosUploadRoute =
+  ApiFeriasDocumentosUploadRouteImport.update({
+    id: '/api/ferias/documentos/upload',
+    path: '/api/ferias/documentos/upload',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiFeriasDocumentosVisualizarRoute =
+  ApiFeriasDocumentosVisualizarRouteImport.update({
+    id: '/api/ferias/documentos/visualizar',
+    path: '/api/ferias/documentos/visualizar',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,10 +139,15 @@ export interface FileRoutesByFullPath {
   '/folha': typeof FolhaRoute
   '/funcionarios': typeof FuncionariosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/login': typeof LoginRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
   '/relatorios': typeof RelatoriosRoute
+  '/trocar-senha': typeof TrocarSenhaRoute
   '/usuarios': typeof UsuariosRoute
+  '/api/ferias/documentos/excluir': typeof ApiFeriasDocumentosExcluirRoute
+  '/api/ferias/documentos/upload': typeof ApiFeriasDocumentosUploadRoute
+  '/api/ferias/documentos/visualizar': typeof ApiFeriasDocumentosVisualizarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,10 +160,15 @@ export interface FileRoutesByTo {
   '/folha': typeof FolhaRoute
   '/funcionarios': typeof FuncionariosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/login': typeof LoginRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
   '/relatorios': typeof RelatoriosRoute
+  '/trocar-senha': typeof TrocarSenhaRoute
   '/usuarios': typeof UsuariosRoute
+  '/api/ferias/documentos/excluir': typeof ApiFeriasDocumentosExcluirRoute
+  '/api/ferias/documentos/upload': typeof ApiFeriasDocumentosUploadRoute
+  '/api/ferias/documentos/visualizar': typeof ApiFeriasDocumentosVisualizarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,10 +182,15 @@ export interface FileRoutesById {
   '/folha': typeof FolhaRoute
   '/funcionarios': typeof FuncionariosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/login': typeof LoginRoute
   '/ponto': typeof PontoRoute
   '/recrutamento': typeof RecrutamentoRoute
   '/relatorios': typeof RelatoriosRoute
+  '/trocar-senha': typeof TrocarSenhaRoute
   '/usuarios': typeof UsuariosRoute
+  '/api/ferias/documentos/excluir': typeof ApiFeriasDocumentosExcluirRoute
+  '/api/ferias/documentos/upload': typeof ApiFeriasDocumentosUploadRoute
+  '/api/ferias/documentos/visualizar': typeof ApiFeriasDocumentosVisualizarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,10 +205,15 @@ export interface FileRouteTypes {
     | '/folha'
     | '/funcionarios'
     | '/integracoes'
+    | '/login'
     | '/ponto'
     | '/recrutamento'
     | '/relatorios'
+    | '/trocar-senha'
     | '/usuarios'
+    | '/api/ferias/documentos/excluir'
+    | '/api/ferias/documentos/upload'
+    | '/api/ferias/documentos/visualizar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,10 +226,15 @@ export interface FileRouteTypes {
     | '/folha'
     | '/funcionarios'
     | '/integracoes'
+    | '/login'
     | '/ponto'
     | '/recrutamento'
     | '/relatorios'
+    | '/trocar-senha'
     | '/usuarios'
+    | '/api/ferias/documentos/excluir'
+    | '/api/ferias/documentos/upload'
+    | '/api/ferias/documentos/visualizar'
   id:
     | '__root__'
     | '/'
@@ -189,10 +247,15 @@ export interface FileRouteTypes {
     | '/folha'
     | '/funcionarios'
     | '/integracoes'
+    | '/login'
     | '/ponto'
     | '/recrutamento'
     | '/relatorios'
+    | '/trocar-senha'
     | '/usuarios'
+    | '/api/ferias/documentos/excluir'
+    | '/api/ferias/documentos/upload'
+    | '/api/ferias/documentos/visualizar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -206,10 +269,15 @@ export interface RootRouteChildren {
   FolhaRoute: typeof FolhaRoute
   FuncionariosRoute: typeof FuncionariosRoute
   IntegracoesRoute: typeof IntegracoesRoute
+  LoginRoute: typeof LoginRoute
   PontoRoute: typeof PontoRoute
   RecrutamentoRoute: typeof RecrutamentoRoute
   RelatoriosRoute: typeof RelatoriosRoute
+  TrocarSenhaRoute: typeof TrocarSenhaRoute
   UsuariosRoute: typeof UsuariosRoute
+  ApiFeriasDocumentosExcluirRoute: typeof ApiFeriasDocumentosExcluirRoute
+  ApiFeriasDocumentosUploadRoute: typeof ApiFeriasDocumentosUploadRoute
+  ApiFeriasDocumentosVisualizarRoute: typeof ApiFeriasDocumentosVisualizarRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -284,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IntegracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ponto': {
       id: '/ponto'
       path: '/ponto'
@@ -305,11 +380,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RelatoriosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trocar-senha': {
+      id: '/trocar-senha'
+      path: '/trocar-senha'
+      fullPath: '/trocar-senha'
+      preLoaderRoute: typeof TrocarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/usuarios': {
       id: '/usuarios'
       path: '/usuarios'
       fullPath: '/usuarios'
       preLoaderRoute: typeof UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ferias/documentos/excluir': {
+      id: '/api/ferias/documentos/excluir'
+      path: '/api/ferias/documentos/excluir'
+      fullPath: '/api/ferias/documentos/excluir'
+      preLoaderRoute: typeof ApiFeriasDocumentosExcluirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ferias/documentos/upload': {
+      id: '/api/ferias/documentos/upload'
+      path: '/api/ferias/documentos/upload'
+      fullPath: '/api/ferias/documentos/upload'
+      preLoaderRoute: typeof ApiFeriasDocumentosUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ferias/documentos/visualizar': {
+      id: '/api/ferias/documentos/visualizar'
+      path: '/api/ferias/documentos/visualizar'
+      fullPath: '/api/ferias/documentos/visualizar'
+      preLoaderRoute: typeof ApiFeriasDocumentosVisualizarRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -326,10 +429,15 @@ const rootRouteChildren: RootRouteChildren = {
   FolhaRoute: FolhaRoute,
   FuncionariosRoute: FuncionariosRoute,
   IntegracoesRoute: IntegracoesRoute,
+  LoginRoute: LoginRoute,
   PontoRoute: PontoRoute,
   RecrutamentoRoute: RecrutamentoRoute,
   RelatoriosRoute: RelatoriosRoute,
+  TrocarSenhaRoute: TrocarSenhaRoute,
   UsuariosRoute: UsuariosRoute,
+  ApiFeriasDocumentosExcluirRoute: ApiFeriasDocumentosExcluirRoute,
+  ApiFeriasDocumentosUploadRoute: ApiFeriasDocumentosUploadRoute,
+  ApiFeriasDocumentosVisualizarRoute: ApiFeriasDocumentosVisualizarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
